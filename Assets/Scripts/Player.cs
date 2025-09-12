@@ -18,6 +18,8 @@ public class Player : MonoBehaviour
     [Header("Movement")]
     public float moveSpeed;
 
+    private bool facingRight = true;
+
     private void Awake()
     {
         anim = GetComponentInChildren<Animator>();
@@ -56,5 +58,20 @@ public class Player : MonoBehaviour
     public void SetVelocity(float xVelocity, float yVelocity)
     {
         rb.velocity = new Vector2(xVelocity, yVelocity);
+        FlipIfNeeded(xVelocity);
+    }
+
+    private void Flip()
+    {
+        transform.Rotate(0, 180, 0);
+        facingRight = !facingRight;
+    }
+
+    private void FlipIfNeeded(float xVelocity)
+    {
+        if (xVelocity > 0 && facingRight == false)
+            Flip();
+        else if (xVelocity < 0 && facingRight == true)
+            Flip();
     }
 }
