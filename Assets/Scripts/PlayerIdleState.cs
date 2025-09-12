@@ -12,7 +12,7 @@ public class PlayerIdleState : EntityState
     {
         base.Update();
 
-        if (player.moveInput.x != 0)
+        if (player.hasGameStarted)
             stateMachine.ChangeState(player.moveState);
     }
 }
