@@ -18,11 +18,11 @@ public class Player : MonoBehaviour
 
     public bool hasGameStarted { get; private set; } = false;
 
-    [Header("Movement")]
+    [Header("Movement Settings")]
     public float moveSpeed;
     public float jumpForce = 5;
 
-    [Header("Collision Detection")]
+    [Header("Ground Detection")]
     [SerializeField] private float groundCheckDistance;
     [SerializeField] private LayerMask whatIsGround;
     public bool isGroundDetected { get; private set; }
