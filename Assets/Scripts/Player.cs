@@ -22,6 +22,11 @@ public class Player : MonoBehaviour
     public float moveSpeed;
     public float jumpForce = 5;
 
+    [Header("Jump Buffer")]
+    public float jumpBufferTime = 0.2f;
+    private float currentJumpBuffer = 0;
+    public bool jumpBuffered { get; private set; } = false;
+
     [Header("Ground Detection")]
     [SerializeField] private float groundCheckDistance;
     [SerializeField] private LayerMask whatIsGround;
@@ -61,7 +66,9 @@ public class Player : MonoBehaviour
         DetectGround();
 
         if (!hasGameStarted && Keyboard.current.anyKey.wasPressedThisFrame)
-            hasGameStarted = true;   
+            hasGameStarted = true;
+
+        HandleJumpBuffer();
 
         stateMachine.UpdateState();
     }
@@ -69,6 +76,29 @@ public class Player : MonoBehaviour
     public void SetVelocity(float xVelocity, float yVelocity)
     {
         rb.velocity = new Vector2(xVelocity, yVelocity);
+    }
+
+    public void StartJumpBuffer()
+    {
+        jumpBuffered = true;
+        currentJumpBuffer = jumpBufferTime;
+    }
+
+    public void ClearJumpBuffer()
+    {
+        jumpBuffered = false;
+    }
+
+    private void HandleJumpBuffer()
+    {
+        if (jumpBuffered)
+        {
+            currentJumpBuffer -= Time.deltaTime;
+            if (currentJumpBuffer < 0)
+            {
+                jumpBuffered = false;
+            }
+        }
     }
 
     private void DetectGround()
