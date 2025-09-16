@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerIdleState : EntityState
+public class PlayerIdleState : PlayerGroundState
 {
     public PlayerIdleState(Player player, StateMachine stateMachine, string animBoolName) : base(player, stateMachine, animBoolName)
     {
@@ -12,7 +12,7 @@ public class PlayerIdleState : EntityState
     {
         base.Update();
 
-        if (player.hasGameStarted)
+        if (player.hasGameStarted && !player.isWallDetected)
             stateMachine.ChangeState(player.moveState);
     }
 }

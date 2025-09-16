@@ -12,7 +12,6 @@ public class PlayerAirState : EntityState
     {
         base.Update();
 
-
         if (player.hasGameStarted)
             player.SetVelocity(player.moveSpeed, rb.velocity.y);
 

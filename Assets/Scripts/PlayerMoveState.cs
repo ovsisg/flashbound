@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMoveState : EntityState
+public class PlayerMoveState : PlayerGroundState
 {
     public PlayerMoveState(Player player, StateMachine stateMachine, string animBoolName) : base(player, stateMachine, animBoolName)
     {
@@ -12,8 +12,11 @@ public class PlayerMoveState : EntityState
     {
         base.Update();
         
-        if (player.playerControls.Player.Jump.WasPerformedThisFrame())
-            stateMachine.ChangeState(player.jumpState);   
+        if (player.isWallDetected)
+        {
+            player.SetVelocity(0, rb.velocity.y);
+            stateMachine.ChangeState(player.idleState);
+        }
 
         player.SetVelocity(player.moveSpeed, rb.velocity.y);
     }

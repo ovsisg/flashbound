@@ -15,8 +15,10 @@ public class Player : MonoBehaviour
     public PlayerFallState fallState { get; private set; }
 
     public bool hasGameStarted { get; private set; } = false;
+    public bool hasJustStartedGame { get; private set; } = false;
     public bool jumpBuffered { get; private set; } = false;
     public bool isGroundDetected { get; private set; }
+    public bool isWallDetected { get; private set; }
 
     private StateMachine stateMachine;
     private float currentJumpBuffer = 0;
@@ -31,6 +33,8 @@ public class Player : MonoBehaviour
     [Header("Ground Detection")]
     [SerializeField] private float groundCheckDistance;
     [SerializeField] private LayerMask whatIsGround;
+    [SerializeField] private Transform wallCheck;
+    [SerializeField] private Vector2 wallCheckSize;
 
     private void Awake()
     {
@@ -66,11 +70,17 @@ public class Player : MonoBehaviour
         DetectGround();
 
         if (!hasGameStarted && Keyboard.current.anyKey.wasPressedThisFrame)
+        {
             hasGameStarted = true;
+            hasJustStartedGame = true;
+        }
 
         HandleJumpBuffer();
 
         stateMachine.UpdateState();
+
+        if (hasJustStartedGame)
+            hasJustStartedGame = false;
     }
 
     public void SetVelocity(float xVelocity, float yVelocity)
@@ -104,10 +114,12 @@ public class Player : MonoBehaviour
     private void DetectGround()
     {
         isGroundDetected = Physics2D.Raycast(transform.position, Vector2.down, groundCheckDistance, whatIsGround);
+        isWallDetected = Physics2D.BoxCast(wallCheck.position, wallCheckSize, 0, Vector2.zero, 0, whatIsGround);
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.DrawLine(transform.position, transform.position + new Vector3(0, -groundCheckDistance, 0));
+        Gizmos.DrawWireCube(wallCheck.position, wallCheckSize);
     }
 }
