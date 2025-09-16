@@ -7,9 +7,7 @@ public class Player : MonoBehaviour
 {
     public Animator anim { get; private set; }
     public Rigidbody2D rb { get; private set; }
-
     public PlayerControls playerControls { get; private set; }
-    private StateMachine stateMachine;
 
     public PlayerIdleState idleState { get; private set; }
     public PlayerMoveState moveState { get; private set; }
@@ -17,20 +15,22 @@ public class Player : MonoBehaviour
     public PlayerFallState fallState { get; private set; }
 
     public bool hasGameStarted { get; private set; } = false;
+    public bool jumpBuffered { get; private set; } = false;
+    public bool isGroundDetected { get; private set; }
+
+    private StateMachine stateMachine;
+    private float currentJumpBuffer = 0;
 
     [Header("Movement Settings")]
     public float moveSpeed;
     public float jumpForce = 5;
 
-    [Header("Jump Buffer")]
+    [Header("Jump Buffer Settings")]
     public float jumpBufferTime = 0.2f;
-    private float currentJumpBuffer = 0;
-    public bool jumpBuffered { get; private set; } = false;
 
     [Header("Ground Detection")]
     [SerializeField] private float groundCheckDistance;
     [SerializeField] private LayerMask whatIsGround;
-    public bool isGroundDetected { get; private set; }
 
     private void Awake()
     {
