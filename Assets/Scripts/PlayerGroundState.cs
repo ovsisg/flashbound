@@ -8,6 +8,14 @@ public class PlayerGroundState : EntityState
     {
     }
 
+    public override void Enter()
+    {
+        base.Enter();
+
+        player.ClearCoyoteTime();
+        player.SetHasJumped(false);
+    }
+
     public override void Update()
     {
         base.Update();

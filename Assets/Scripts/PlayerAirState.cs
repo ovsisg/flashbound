@@ -8,6 +8,13 @@ public class PlayerAirState : EntityState
     {
     }
 
+    public override void Enter()
+    {
+        base.Enter();
+
+        player.ResetCoyoteTime();
+    }
+
     public override void Update()
     {
         base.Update();
@@ -15,8 +22,17 @@ public class PlayerAirState : EntityState
         if (player.hasGameStarted)
             player.SetVelocity(player.moveSpeed, rb.velocity.y);
 
+        if (player.jumpBuffered && player.coyoteTime > 0 && !player.hasJumped)
+        {
+            player.ClearJumpBuffer();
+            stateMachine.ChangeState(player.jumpState);
+        }
+
         if (player.playerControls.Player.Jump.WasPressedThisFrame())
         {
+            if (player.coyoteTime > 0 && !player.hasJumped)
+                stateMachine.ChangeState(player.jumpState);
+
             if (!player.isGroundDetected)
                 player.StartJumpBuffer();
         }

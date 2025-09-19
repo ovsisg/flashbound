@@ -7,7 +7,7 @@ public class PlatformSpawner : MonoBehaviour
     [Header("Platform References")]
     [SerializeField] private Transform[] platformPrefabs;
 
-    [Header("Spawn Settings")]
+    [Header("Spawn")]
     [SerializeField] private Vector3 nextSpawnPosition;
     [SerializeField] private float spawnDistanceThreshold;
     [SerializeField] private float despawnDistanceThreshold;

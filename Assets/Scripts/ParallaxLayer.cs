@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class ParallaxLayer
 {
-    [Header("Parallax Settings")]
+    [Header("Parallax")]
     [SerializeField] private Transform background;
     [SerializeField] private float parallaxMultiplier;
     [SerializeField] private float imageWidthOffset = 10;

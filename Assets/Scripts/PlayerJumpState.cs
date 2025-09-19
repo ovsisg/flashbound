@@ -13,6 +13,7 @@ public class PlayerJumpState : PlayerAirState
         base.Enter();
 
         player.SetVelocity(rb.velocity.x, player.jumpForce);
+        player.SetHasJumped(true);
     }
 
     public override void Update()

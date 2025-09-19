@@ -26,7 +26,7 @@ public class Player : MonoBehaviour
     private float baseMoveSpeed;
     private float baseMilestoneSpacing;
 
-    [Header("Movement Settings")]
+    [Header("Movement")]
     public float moveSpeed;
     public float jumpForce = 5;
 
@@ -36,12 +36,18 @@ public class Player : MonoBehaviour
     [SerializeField] private float milestoneSpacing;
     private float nextSpeedMilestone;
    
-    [Header("Jump Buffer Settings")]
+    [Header("Jump Buffer")]
     public float jumpBufferTime = 0.2f;
 
+    [Header("Coyote Jump")]
+    public float coyoteDuration = 0.15f; // The maximum time the player can still jump after leaving a ledge
+    public float coyoteTime { get; private set; } // Tracks the current timer for the coyote jump
+    public bool hasJumped { get; private set; } = false;
+
     [Header("Ground Detection")]
-    [SerializeField] private float groundCheckDistance;
     [SerializeField] private LayerMask whatIsGround;
+    [SerializeField] private float groundCheckDistance;
+    [Space]
     [SerializeField] private Transform wallCheck;
     [SerializeField] private Vector2 wallCheckSize;
 
@@ -89,6 +95,7 @@ public class Player : MonoBehaviour
         }
 
         HandleJumpBuffer();
+        HandleCoyoteTime();
 
         stateMachine.UpdateState();
 
@@ -125,6 +132,29 @@ public class Player : MonoBehaviour
                 jumpBuffered = false;
             }
         }
+    }
+
+    private void HandleCoyoteTime()
+    {
+        if (coyoteTime > 0)
+        {
+            coyoteTime -= Time.deltaTime;
+        }
+    }
+
+    public void ClearCoyoteTime()
+    {
+        coyoteTime = 0;
+    }
+
+    public void ResetCoyoteTime()
+    {
+        coyoteTime = coyoteDuration;
+    }
+
+    public void SetHasJumped(bool value)
+    {
+        hasJumped = value;
     }
 
     private void DetectGround()

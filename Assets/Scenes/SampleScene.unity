@@ -1068,10 +1068,11 @@ MonoBehaviour:
   speedMultiplier: 1.15
   milestoneSpacing: 50
   jumpBufferTime: 0.3
-  groundCheckDistance: 1.3
+  coyoteDuration: 0.12
   whatIsGround:
     serializedVersion: 2
     m_Bits: 64
+  groundCheckDistance: 1.3
   wallCheck: {fileID: 1293182805}
   wallCheckSize: {x: 0.5, y: 2}
 --- !u!1 &2009816574
