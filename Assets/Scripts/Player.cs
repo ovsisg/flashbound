@@ -14,6 +14,7 @@ public class Player : MonoBehaviour
     public PlayerMoveState moveState { get; private set; }
     public PlayerJumpState jumpState { get; private set; }
     public PlayerFallState fallState { get; private set; }
+    public PlayerDeadState deadState { get; private set; }
 
     public bool hasGameStarted { get; private set; } = false;
     public bool hasJustStartedGame { get; private set; } = false;
@@ -25,6 +26,7 @@ public class Player : MonoBehaviour
     private float currentJumpBuffer = 0;
     private float baseMoveSpeed;
     private float baseMilestoneSpacing;
+    private bool isDead;
 
     [Header("Movement")]
     public float moveSpeed;
@@ -63,6 +65,7 @@ public class Player : MonoBehaviour
         moveState = new PlayerMoveState(this, stateMachine, "idleMove");
         jumpState = new PlayerJumpState(this, stateMachine, "jumpFall");
         fallState = new PlayerFallState(this, stateMachine, "jumpFall");
+        deadState = new PlayerDeadState(this, stateMachine, "dead");
     }
 
     private void OnEnable()
@@ -86,6 +89,14 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+        if (isDead)
+            return;
+
+        if (Keyboard.current.eKey.wasPressedThisFrame)
+        {
+            Die();
+        }
+
         DetectGround();
 
         if (!hasGameStarted && Keyboard.current.anyKey.wasPressedThisFrame)
@@ -184,6 +195,15 @@ public class Player : MonoBehaviour
     {
         moveSpeed = baseMoveSpeed;
         milestoneSpacing = baseMilestoneSpacing;
+    }
+
+    public void Die()
+    {
+        if (isDead)
+            return;
+
+        isDead = true;
+        stateMachine.ChangeState(deadState);
     }
 
     private void OnDrawGizmos()
