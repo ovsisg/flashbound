@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -22,11 +23,19 @@ public class Player : MonoBehaviour
 
     private StateMachine stateMachine;
     private float currentJumpBuffer = 0;
+    private float baseMoveSpeed;
+    private float baseMilestoneSpacing;
 
     [Header("Movement Settings")]
     public float moveSpeed;
     public float jumpForce = 5;
 
+    [Header("Speed Progression")]
+    [SerializeField] private float maxSpeed;
+    [SerializeField] private float speedMultiplier;
+    [SerializeField] private float milestoneSpacing;
+    private float nextSpeedMilestone;
+   
     [Header("Jump Buffer Settings")]
     public float jumpBufferTime = 0.2f;
 
@@ -63,6 +72,10 @@ public class Player : MonoBehaviour
     private void Start()
     {
         stateMachine.Initialise(fallState);
+
+        nextSpeedMilestone = milestoneSpacing;
+        baseMoveSpeed = moveSpeed;
+        baseMilestoneSpacing = milestoneSpacing;
     }
 
     private void Update()
@@ -81,6 +94,9 @@ public class Player : MonoBehaviour
 
         if (hasJustStartedGame)
             hasJustStartedGame = false;
+        
+        if (hasGameStarted)
+            HandleSpeedProgression();
     }
 
     public void SetVelocity(float xVelocity, float yVelocity)
@@ -115,6 +131,29 @@ public class Player : MonoBehaviour
     {
         isGroundDetected = Physics2D.Raycast(transform.position, Vector2.down, groundCheckDistance, whatIsGround);
         isWallDetected = Physics2D.BoxCast(wallCheck.position, wallCheckSize, 0, Vector2.zero, 0, whatIsGround);
+    }
+
+    private void HandleSpeedProgression()
+    {
+        if (moveSpeed == maxSpeed)
+            return;
+
+        if (transform.position.x > nextSpeedMilestone)
+        {
+            nextSpeedMilestone += milestoneSpacing;
+
+            moveSpeed *= speedMultiplier;
+            milestoneSpacing *= speedMultiplier;
+
+            if (moveSpeed > maxSpeed)
+                moveSpeed = maxSpeed;
+        }
+    }
+
+    public void SpeedReset()
+    {
+        moveSpeed = baseMoveSpeed;
+        milestoneSpacing = baseMilestoneSpacing;
     }
 
     private void OnDrawGizmos()

@@ -14,6 +14,7 @@ public class PlayerMoveState : PlayerGroundState
         
         if (player.isWallDetected)
         {
+            player.SpeedReset();
             player.SetVelocity(0, rb.velocity.y);
             stateMachine.ChangeState(player.idleState);
         }

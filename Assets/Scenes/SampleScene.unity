@@ -159,11 +159,11 @@ MonoBehaviour:
     parallaxMultiplier: 0.5
     imageWidthOffset: 28
   - background: {fileID: 2009816575}
-    parallaxMultiplier: 0.5
-    imageWidthOffset: 50
+    parallaxMultiplier: 0.6
+    imageWidthOffset: 60
   - background: {fileID: 2146740230}
-    parallaxMultiplier: 0.5
-    imageWidthOffset: 50
+    parallaxMultiplier: 0.6
+    imageWidthOffset: 60
 --- !u!4 &153335375
 Transform:
   m_ObjectHideFlags: 0
@@ -1064,6 +1064,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 8
   jumpForce: 14
+  maxSpeed: 20
+  speedMultiplier: 1.15
+  milestoneSpacing: 50
   jumpBufferTime: 0.3
   groundCheckDistance: 1.3
   whatIsGround:
