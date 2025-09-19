@@ -1,0 +1,28 @@
+* text=auto
+
+*.cs text
+*.shader text
+*.compute text
+*.cginc text
+*.meta text
+*.unity text
+*.prefab text
+*.asset text
+*.anim text
+
+*.sln text eol=crlf
+*.csproj text eol=crlf
+*.vcxproj text eol=crlf
+*.vcproj text eol=crlf
+
+*.png binary
+*.jpg binary
+*.fbx binary
+*.wav binary
+*.mp3 binary
+*.ogg binary
+*.mp4 binary
+*.mov binary
+*.zip binary
+*.unitypackage binary
+*.dll binary
