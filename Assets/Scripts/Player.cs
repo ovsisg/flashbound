@@ -53,8 +53,8 @@ public class Player : MonoBehaviour
         stateMachine = new StateMachine();
         playerControls = new PlayerControls();
 
-        idleState = new PlayerIdleState(this, stateMachine, "idle");
-        moveState = new PlayerMoveState(this, stateMachine, "move");
+        idleState = new PlayerIdleState(this, stateMachine, "idleMove");
+        moveState = new PlayerMoveState(this, stateMachine, "idleMove");
         jumpState = new PlayerJumpState(this, stateMachine, "jumpFall");
         fallState = new PlayerFallState(this, stateMachine, "jumpFall");
     }

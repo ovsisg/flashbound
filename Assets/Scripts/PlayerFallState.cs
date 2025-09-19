@@ -20,9 +20,13 @@ public class PlayerFallState : PlayerAirState
                 stateMachine.ChangeState(player.jumpState);
             }
             else if (player.hasGameStarted)
+            {
                 stateMachine.ChangeState(player.moveState);
-            else    
+            }
+            else
+            {
                 stateMachine.ChangeState(player.idleState);
+            }    
         }
     }
 }

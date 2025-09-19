@@ -12,7 +12,13 @@ public class PlayerIdleState : PlayerGroundState
     {
         base.Update();
 
-        if (player.hasGameStarted && !player.isWallDetected)
+        if (!player.isGroundDetected)
+        {
+            stateMachine.ChangeState(player.fallState);
+        }
+        else if (player.hasGameStarted && !player.isWallDetected)
+        {
             stateMachine.ChangeState(player.moveState);
+        }
     }
 }

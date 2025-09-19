@@ -12,11 +12,18 @@ public class PlayerMoveState : PlayerGroundState
     {
         base.Update();
         
+        if (!player.isGroundDetected)
+            stateMachine.ChangeState(player.fallState);
+
         if (player.isWallDetected)
         {
             player.SpeedReset();
             player.SetVelocity(0, rb.velocity.y);
-            stateMachine.ChangeState(player.idleState);
+
+            if (!player.isGroundDetected)
+                stateMachine.ChangeState(player.fallState);
+            else
+                stateMachine.ChangeState(player.idleState);
         }
 
         player.SetVelocity(player.moveSpeed, rb.velocity.y);
