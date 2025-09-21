@@ -14,7 +14,8 @@ public class Player : MonoBehaviour
     public PlayerMoveState moveState { get; private set; }
     public PlayerJumpState jumpState { get; private set; }
     public PlayerFallState fallState { get; private set; }
-    public PlayerDeadState deadState { get; private set; }
+    public PlayerDeadGroundState deadGroundState { get; private set; }
+    public PlayerDeadAirState deadAirState { get; private set; }
 
     public bool hasGameStarted { get; private set; } = false;
     public bool hasJustStartedGame { get; private set; } = false;
@@ -65,7 +66,8 @@ public class Player : MonoBehaviour
         moveState = new PlayerMoveState(this, stateMachine, "idleMove");
         jumpState = new PlayerJumpState(this, stateMachine, "jumpFall");
         fallState = new PlayerFallState(this, stateMachine, "jumpFall");
-        deadState = new PlayerDeadState(this, stateMachine, "dead");
+        deadGroundState = new PlayerDeadGroundState(this, stateMachine, "deadGround");
+        deadAirState = new PlayerDeadAirState(this, stateMachine, "deadAir");
     }
 
     private void OnEnable()
@@ -203,7 +205,19 @@ public class Player : MonoBehaviour
             return;
 
         isDead = true;
-        stateMachine.ChangeState(deadState);
+
+        if (isGroundDetected)
+            stateMachine.ChangeState(deadGroundState);
+        else
+            stateMachine.ChangeState(deadAirState);
+
+        StartCoroutine(RestartAfterDelay(1.5f));
+    }
+
+    private IEnumerator RestartAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        GameManager.instance.RestartGame();
     }
 
     private void OnDrawGizmos()
