@@ -21,6 +21,8 @@ public class PlayerAirState : EntityState
 
         if (player.hasGameStarted)
             player.SetVelocity(player.moveSpeed, rb.velocity.y);
+        else
+            return;
 
         if (player.jumpBuffered && player.coyoteTime > 0 && !player.hasJumped)
         {

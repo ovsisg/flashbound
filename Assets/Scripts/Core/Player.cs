@@ -101,7 +101,7 @@ public class Player : MonoBehaviour
 
         DetectGround();
 
-        if (!hasGameStarted && Keyboard.current.anyKey.wasPressedThisFrame)
+        if (!hasGameStarted && isGroundDetected && (Keyboard.current.anyKey.wasPressedThisFrame || playerControls.Player.Jump.WasPressedThisFrame()))
         {
             hasGameStarted = true;
             hasJustStartedGame = true;
