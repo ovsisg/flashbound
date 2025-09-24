@@ -17,7 +17,7 @@ public class BackgroundController : MonoBehaviour
         backgroundLength = GetComponent<SpriteRenderer>().bounds.size.x;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         float parallaxDistance = cameraTransform.position.x * parallaxEffect;
         float cameraDistance = cameraTransform.position.x * (1 - parallaxEffect);
