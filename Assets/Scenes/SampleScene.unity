@@ -1413,9 +1413,10 @@ MonoBehaviour:
   whatIsGround:
     serializedVersion: 2
     m_Bits: 64
-  groundCheckDistance: 1.3
+  groundCheckDistance: 1.2
   wallCheck: {fileID: 1293182805}
   wallCheckSize: {x: 0.5, y: 2}
+  deathYThreshold: -5
 --- !u!1 &1980004171
 GameObject:
   m_ObjectHideFlags: 0

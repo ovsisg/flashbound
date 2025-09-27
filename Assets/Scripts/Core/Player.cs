@@ -54,6 +54,9 @@ public class Player : MonoBehaviour
     [SerializeField] private Transform wallCheck;
     [SerializeField] private Vector2 wallCheckSize;
 
+    [Header("Fall Death Threshold")]
+    [SerializeField] private float deathYThreshold = -5f;
+
     private void Awake()
     {
         anim = GetComponentInChildren<Animator>();
@@ -94,19 +97,8 @@ public class Player : MonoBehaviour
         if (isDead)
             return;
 
-        if (Keyboard.current.eKey.wasPressedThisFrame)
-        {
-            Die();
-        }
-
-        DetectGround();
-
-        if (!hasGameStarted && isGroundDetected && (Keyboard.current.anyKey.wasPressedThisFrame || playerControls.Player.Jump.WasPressedThisFrame()))
-        {
-            hasGameStarted = true;
-            hasJustStartedGame = true;
-        }
-
+        DetectGroundAndWall();
+        CheckGameStartInput();
         HandleJumpBuffer();
         HandleCoyoteTime();
 
@@ -114,14 +106,38 @@ public class Player : MonoBehaviour
 
         if (hasJustStartedGame)
             hasJustStartedGame = false;
-        
+
         if (hasGameStarted)
             HandleSpeedProgression();
+
+        if (transform.position.y < deathYThreshold && !isDead)
+            Die();
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawLine(transform.position, transform.position + new Vector3(0, -groundCheckDistance, 0));
+        Gizmos.DrawWireCube(wallCheck.position, wallCheckSize);
+    }
+
+    private void CheckGameStartInput()
+    {
+        if (!hasGameStarted && isGroundDetected && (Keyboard.current.anyKey.wasPressedThisFrame || playerControls.Player.Jump.WasPressedThisFrame()))
+        {
+            hasGameStarted = true;
+            hasJustStartedGame = true;
+        }
     }
 
     public void SetVelocity(float xVelocity, float yVelocity)
     {
         rb.velocity = new Vector2(xVelocity, yVelocity);
+    }
+
+    private void DetectGroundAndWall()
+    {
+        isGroundDetected = Physics2D.Raycast(transform.position, Vector2.down, groundCheckDistance, whatIsGround);
+        isWallDetected = Physics2D.BoxCast(wallCheck.position, wallCheckSize, 0, Vector2.zero, 0, whatIsGround);
     }
 
     public void StartJumpBuffer()
@@ -165,17 +181,6 @@ public class Player : MonoBehaviour
         coyoteTime = coyoteDuration;
     }
 
-    public void SetHasJumped(bool value)
-    {
-        hasJumped = value;
-    }
-
-    private void DetectGround()
-    {
-        isGroundDetected = Physics2D.Raycast(transform.position, Vector2.down, groundCheckDistance, whatIsGround);
-        isWallDetected = Physics2D.BoxCast(wallCheck.position, wallCheckSize, 0, Vector2.zero, 0, whatIsGround);
-    }
-
     private void HandleSpeedProgression()
     {
         if (moveSpeed == maxSpeed)
@@ -193,7 +198,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void SpeedReset()
+    public void ResetSpeed()
     {
         moveSpeed = baseMoveSpeed;
         milestoneSpacing = baseMilestoneSpacing;
@@ -220,9 +225,8 @@ public class Player : MonoBehaviour
         GameManager.instance.RestartGame();
     }
 
-    private void OnDrawGizmos()
+    public void SetHasJumped(bool value)
     {
-        Gizmos.DrawLine(transform.position, transform.position + new Vector3(0, -groundCheckDistance, 0));
-        Gizmos.DrawWireCube(wallCheck.position, wallCheckSize);
+        hasJumped = value;
     }
 }
