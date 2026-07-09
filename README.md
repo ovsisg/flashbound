@@ -1,2 +1,2 @@
-# flashbound
-An endless runner game in development.
+# Flashbound
+**Flashbound** is an endless runner game in development.
