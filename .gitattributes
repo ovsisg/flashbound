@@ -1,28 +1,24 @@
+# Normalise line endings for all text files
 * text=auto
 
-*.cs text
-*.shader text
-*.compute text
-*.cginc text
-*.meta text
-*.unity text
-*.prefab text
-*.asset text
-*.anim text
+# Unity binary files
+*.unitypackage binary
 
-*.sln text eol=crlf
-*.csproj text eol=crlf
-*.vcxproj text eol=crlf
-*.vcproj text eol=crlf
-
+# Image formats
 *.png binary
 *.jpg binary
-*.fbx binary
-*.wav binary
+
+# Audio formats
 *.mp3 binary
 *.ogg binary
-*.mp4 binary
+*.wav binary
+
+# Video formats
 *.mov binary
-*.zip binary
-*.unitypackage binary
+*.mp4 binary
+
+# Bundles and binaries
 *.dll binary
+
+# Packaging
+*.zip binary
